@@ -17,11 +17,14 @@ wss.on("connection", (ws) => {
   ws.on("close", () => {
     connectedClients.delete(ws);
     const myroom = rooms.get(ws.roomId);
-    rooms.get(myroom).delete(ws);
+    if (myroom) {
+      rooms.get(myroom).delete(ws);
+    }
   });
 
   ws.on("message", (data) => {
     const msg = JSON.parse(data.toString());
+
     if (msg.type === "create") {
       rooms.set(roomId, new Set());
       rooms.get(roomId).add(ws);
