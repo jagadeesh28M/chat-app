@@ -29,7 +29,11 @@ wss.on("connection", (ws) => {
       rooms.set(roomId, new Set());
       rooms.get(roomId).add(ws);
       ws.roomId = roomId;
-      ws.send(`Room is created and joined : ${roomId}`);
+      const msgData = {
+        type: "roomCreated",
+        roomId: roomId,
+      };
+      ws.send(JSON.stringify(msgData));
       roomId++;
     }
 
